@@ -1,0 +1,41 @@
+global:
+  imagePullSecrets: []
+
+  podSecurityPolicy:
+    useAppArmor: true
+
+  logLevel: 2
+
+  leaderElection:
+    namespace: "cert-manager"
+
+crds:
+  enabled: true
+  keep: false
+
+resources:
+  requests:
+    cpu: 50m
+    memory: 100Mi
+  limits:
+    cpu: 200m
+    memory: 512Mi
+
+replicaCount: 1
+
+strategy:
+  type: RollingUpdate
+  rollingUpdate:
+    maxSurge: 0
+    maxUnavailable: 1
+
+podDisruptionBudget:
+  enabled: false
+  minAvailable: 1
+  maxUnavailable: 1
+  unhealthyPodEvictionPolicy: AlwaysAllow
+
+image:
+  pullPolicy: IfNotPresent
+
+enableCertificateOwnerRef: true

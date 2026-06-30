@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: install-minikube
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+spec:
+  project: default
+  sources:
+    - repoURL: 'https://github.com/kelvin124/imdg-chatbot-argocd'
+      targetRevision: main
+      path: install/project
+      directory:
+        recurse: true
+    - repoURL: 'https://github.com/kelvin124/imdg-chatbot-argocd'
+      targetRevision: main
+      path: infrastructure/storage/minikube
+      directory:
+        recurse: true
+    - repoURL: 'https://github.com/kelvin124/imdg-chatbot-argocd'
+      targetRevision: main
+      path: install/root-app
+      directory:
+        recurse: true
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

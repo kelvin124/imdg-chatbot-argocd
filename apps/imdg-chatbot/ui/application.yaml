@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: imdg-chatbot-ui
+  namespace: argocd
+spec:
+  project: imdg-chatbot
+  sources:
+    - repoURL: 'https://github.com/kelvin124/imdg-chatbot-argocd'
+      targetRevision: main
+      ref: current-repo    
+    - chart: imdg-chatbot-ui
+      repoURL: 'ap-singapore-1.ocir.io/axlrvzrcs8ao/imdg-chatbot-ui-chart'
+      targetRevision: 1.0.0
+      helm:
+        valueFiles:
+          - $current-repo/apps/imdg-chatbot/ui/values.yaml   
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: imdg-chatbot-ui
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: infra
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "-5"   
+spec:
+  description: "Infrastructure components"
+  sourceRepos:
+  - "oci://quay.io/jetstack/charts/cert-manager"
+  - "https://grafana-community.github.io/helm-charts"
+  - "https://grafana.github.io/helm-charts"
+  - "https://prometheus-community.github.io/helm-charts"
+  - "https://argoproj.github.io/argo-helm"
+  - "https://github.com/kelvin124/imdg-chatbot-argocd"
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
+  destinations:
+  - namespace: monitoring
+    server: https://kubernetes.default.svc
+  - namespace: cert-manager
+    server: https://kubernetes.default.svc
+  - namespace: argocd
+    server: https://kubernetes.default.svc

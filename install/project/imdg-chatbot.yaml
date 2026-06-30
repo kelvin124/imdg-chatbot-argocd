@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: imdg-chatbot
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "-5"   
+spec:
+  description: "IMDG chatbot"
+  sourceRepos:
+  - "ap-singapore-1.ocir.io/axlrvzrcs8ao/imdg-chatbot"
+  - "ap-singapore-1.ocir.io/axlrvzrcs8ao/imdg-server"
+  - "ap-singapore-1.ocir.io/axlrvzrcs8ao/imdg-server-chart"
+  - "ap-singapore-1.ocir.io/axlrvzrcs8ao/imdg-chatbot-ui-chart"
+  - "https://github.com/kelvin124/imdg-chatbot-argocd"
+  destinations:
+  - namespace: imdg-chatbot-ui
+    server: https://kubernetes.default.svc
+  - namespace: imdg-server
+    server: https://kubernetes.default.svc
+  - namespace: argocd
+    server: https://kubernetes.default.svc    
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'

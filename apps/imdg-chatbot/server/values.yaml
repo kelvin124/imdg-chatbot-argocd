@@ -1,0 +1,21 @@
+replicaCount: 1
+image:
+  repository: ap-singapore-1.ocir.io/axlrvzrcs8ao/imdg-server
+  tag: 1.0.0
+  pullPolicy: Always # Ensure imagePullSecret works
+imagePullSecrets:
+  - name: ocir-image-pull-secret
+configMapName: imdg-server-cm
+configMap:
+  spring.mongodb.uri: "mongodb+srv://${spring.mongodb.username}:${spring.mongodb.password}@${spring.mongodb.host}/${spring.mongodb.database}?retryWrites=true&w=majority"
+  spring.mongodb.host: ""
+  spring.mongodb.port: "27017"
+  spring.mongodb.username: ""
+resources:
+  requests:
+    memory: "512Mi"
+    cpu: "500m"
+  limits:
+    memory: "1Gi"
+    cpu: "1"
+    

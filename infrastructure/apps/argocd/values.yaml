@@ -1,0 +1,16 @@
+global:
+  domain: argocd.example.com
+
+  image:
+    tag: "v3.4.4"
+    imagePullPolicy: IfNotPresent
+
+crds:
+  install: true
+  keep: false
+
+imagePullSecrets: []
+
+logging:
+  format: text
+  level: info  

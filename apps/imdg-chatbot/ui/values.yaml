@@ -1,0 +1,19 @@
+replicaCount: 1
+image:
+  repository: ap-singapore-1.ocir.io/axlrvzrcs8ao/imdg-chatbot-ui
+  tag: 1.0.0
+  pullPolicy: Always # Ensure imagePullSecret works
+imagePullSecrets:
+  - name: ocir-image-pull-secret
+configMapName: imdg-chatbot-ui-cm
+configMap:
+  IMDG_SERVER_URL: http://imdg-server-service.imdg-server.svc.cluster.local
+  MILVUS_URI: http://milvus-standalone.milvus.svc.cluster.local:19530
+secretRefName: imdg-chatbot-ui-secret
+resources:
+  requests:
+    memory: "512Mi"
+    cpu: "500m"
+  limits:
+    memory: "1Gi"
+    cpu: "1"

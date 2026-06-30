@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prometheus
+  namespace: argocd
+spec:
+  project: infra
+  sources:
+    - repoURL: 'https://github.com/kelvin124/imdg-chatbot-argocd'
+      targetRevision: main
+      ref: current-repo    
+    - chart: prometheus
+      repoURL: 'https://prometheus-community.github.io/helm-charts'
+      targetRevision: "29.13.0"
+      helm:
+        valueFiles:
+          - $current-repo/infrastructure/apps/prometheus/values.yaml
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: monitoring
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
